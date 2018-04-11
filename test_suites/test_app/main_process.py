@@ -17,10 +17,10 @@ s.cookies = requests.cookies.cookiejar_from_dict(cookies, cookiejar=None, overwr
 
 app_version='3.6.0'
 g_provider = 'official'
-g_province = "吉林"
-g_city = "吉林"
-g_district=''
-g_area = "丰满区"
+g_province = "云南"
+g_city = "昆明"
+g_district='盘龙区'
+g_area = "盘龙区"
 g_insurance_company = 'TAIPINGYANG'
 g_department = ''
 g_com_id = ''
@@ -350,6 +350,6 @@ def delete_order():
         print traceback.format_exc()
 
 if __name__ == "__main__":
-    # main_proc()
+    main_proc()
     # place_order(31522034177000910)
-    delete_order()
+    # delete_order()
