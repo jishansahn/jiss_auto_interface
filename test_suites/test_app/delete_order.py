@@ -50,7 +50,7 @@ def delete_order_from_db():
         'version':'3.6.0'
     }
     try:
-        sqlstr = "select order_id from dbzhb.user_order where user_id='1451682' and create_time>='2018-04-11' and status=3 order by id desc;"
+        sqlstr = "select order_id from dbzhb.user_order where user_id='1451682' and create_time>='2018-04-12' and status=3 order by id desc;"
         print sqlstr
         db = mysql_db.DB()
         rows = db.selectDB(sqlstr)
