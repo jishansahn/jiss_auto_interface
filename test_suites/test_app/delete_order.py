@@ -2,7 +2,6 @@
 # @Author = jishanshan
 # @Date = 2018/4/8
 import xlrd
-import xlrd
 import requests
 from test_suites import common_func
 import json

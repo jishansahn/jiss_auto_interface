@@ -11,17 +11,30 @@ import traceback
 import os
 import ConfigParser
 
-cookies = dict(ZHBSESSID='80e8b347272be7e768ef89e431f2bf55')
+# cookies = dict(ZHBSESSID='fcf43fff68f18bc0fdab6efa4e12e848')
+cookies = dict(ZHBSESSID='715764e59ed0e99b2bb92ef44dfa7eac')
+
 s = requests.session()
 s.cookies = requests.cookies.cookiejar_from_dict(cookies, cookiejar=None, overwrite=True)
 
-app_version='3.6.0'
+app_version = '3.7.0'
 g_provider = 'official'
-g_province = "云南"
-g_city = "昆明"
-g_district='盘龙区'
-g_area = "盘龙区"
-g_insurance_company = 'TAIPINGYANG'
+# g_province = "安徽"
+# g_city = "黄山"
+# g_district = '休宁县'
+# g_area = "休宁县"
+# g_insurance_company = 'RENBAO'
+# g_department = ''
+# g_com_id = ''
+# g_debug = 1
+# g_host = 'https://www.zuihuibao.com'
+# a28061f2d256168a6b320f4dc95d169b
+
+g_province = "安徽"
+g_city = "合肥"
+g_district = '庐阳区'
+g_area = "庐阳区"
+g_insurance_company = 'RENBAO'
 g_department = ''
 g_com_id = ''
 g_debug = 1
@@ -106,9 +119,11 @@ def main_proc():
             req_data['car_model_no'] = table.cell(i, 2).value
             req_data['frame_no'] = table.cell(i, 3).value
             req_data['engine_no'] = table.cell(i, 4).value
-            req_data['reg_date'] = table.cell(i, 5).value
+            req_data['reg_date'] = xlrd.xldate_as_datetime(table.cell(i, 5).value,0).strftime("%Y-%m-%d")
+            # time.strftime("%Y-%m-%d", xlrd.xldate_as_datetime(table.cell(i, 5).value, 0))
+            print req_data['reg_date']
             req_data['is_special_car'] = table.cell(i, 7).value
-            req_data['special_car_date'] = table.cell(i, 8).value
+            req_data['special_car_date'] = xlrd.xldate_as_datetime(table.cell(i, 8).value,0).strftime("%Y-%m-%d")
             req_data['is_loaned'] = table.cell(i, 9).value
             req_data['beneficiary'] = table.cell(i, 10).value
             req_data['owner_id_no'] = table.cell(i, 11).value
@@ -130,6 +145,8 @@ def main_proc():
             req_data['seat_num'] = str(json_selected_model.get('seat'))
             req_data['selected_car_model_detail'] = json.dumps(json_selected_model, encoding="UTF-8",
                                                                separators=(',', ':'))
+            # req_data[
+            #     'selected_car_model_detail'] = '{"description":"沃尔沃VOLVO C70 T5跑车 手自一体 硬顶敞篷 涡轮增压 2.52L 手自一体 4座 2010款 参考价：￥561000.0","standard_name":"沃尔沃VOLVO C70 T5跑车","price":561000,"engine_desc":"2.52L","seat":4,"gearbox_name":"手自一体","codeSet":["WEI1398RDW"],"market_date":"2010","user_defined":"0","taxprice":0}'
             if g_debug: print req_data
 
             json_order = replenish_info(req_data)
@@ -143,6 +160,7 @@ def main_proc():
                 'provider': g_provider,
                 'province': g_province,
                 'city': g_city,
+                'insurance_company': g_insurance_company,
                 'district': g_district,
                 'department': '',
                 'choose_force': 1,
@@ -150,16 +168,16 @@ def main_proc():
                 'user_force_start_date_change': 0,
                 'user_ins_start_date_change': 0,
                 'force_start_date': '',
-                'force_start_hour': '0',
+                'force_start_hour': 0,
                 'ins_start_date': '',
-                'ins_start_hour': '0',
+                'ins_start_hour': 0,
                 'validate_start_date': '1'
             }
 
             req_data3['user_ins_start_date_change'] = 1
-            req_data3['ins_start_date'] = table.cell(i, 13).value
+            req_data3['ins_start_date'] = xlrd.xldate_as_datetime(table.cell(i, 13).value,0).strftime("%Y-%m-%d")
             req_data3["user_force_start_date_change"] = 1
-            req_data3["force_start_date"] = table.cell(i, 14).value
+            req_data3["force_start_date"] = xlrd.xldate_as_datetime(table.cell(i, 14).value,0).strftime("%Y-%m-%d")
             if g_debug: print 'line', sys._getframe().f_lineno, req_data3
 
             code = update(req_data3)
@@ -168,20 +186,21 @@ def main_proc():
                 continue
 
             req_data2 = {
+                'version': app_version,
                 'car_id': car_id,
                 'post_time_stamp': common_func.get_current_time(),
                 'insurance_company': g_insurance_company,
                 'force_only': 0,
                 'choose_force': 1,
-                'car_broken': 0,
+                'car_broken': 1,
                 'car_broken_price': 0,
-                'non_deduct_car_broken': 0,
+                'non_deduct_car_broken': 1,
                 'third_party': 500000,
-                'non_deduct_third_party': 0,
+                'non_deduct_third_party': 1,
                 'driver_seat': 10000,
-                'non_deduct_driver_seat': 0,
+                'non_deduct_driver_seat': 1,
                 'passenger_seat': 10000,
-                'non_deduct_passenger_seat': 0,
+                'non_deduct_passenger_seat': 1,
                 'car_rob': 0,
                 'non_deduct_car_rob': 0,
                 'glass_broken': 0,
@@ -193,18 +212,27 @@ def main_proc():
                 'non_deduct_wade_water': 0,
                 'find_no_third_party': 0,
                 'specify_repair_factory': 0,
+                'third_party_double_on_holiday': 1,
                 'pay_tax': 1,
+                'user_force_start_date_change': 0,
+                'user_ins_start_date_change': 0,
+                'force_start_date': '',
+                'force_start_hour': 0,
+                'ins_start_date': '',
+                'ins_start_hour': 0,
                 'product_source': 'app',
-                'provider': g_provider,
+                'provider': g_provider
+
             }
+
             if g_debug: print 'line', sys._getframe().f_lineno, req_data2
             # 请求报价
             price_order = record_price_info(req_data2)
             if price_order == None:
                 continue
-            # 请求核保
+                # 请求核保
             place_order(price_order['data']['order_id'], addressee_mobile=req_data['owner_mobile'],
-                        addressee_name=req_data['owner_name'])
+                            addressee_name=req_data['owner_name'])
     except Exception as e:
         print traceback.format_exc()
 
@@ -326,11 +354,12 @@ def place_order(order_id, addressee_mobile='13895274545', addressee_name='吉祥
     else:
         print '核保请求返回错误：', rsp.text
 
+
 def delete_order():
     base_url = g_host + '/php2/order/delete_order.php'
     req_data = {
         'order_id': '',
-        'version':'3.6.0'
+        'version': '3.6.0'
     }
     try:
         f = xlrd.open_workbook('./car_list.xlsx')
@@ -341,15 +370,16 @@ def delete_order():
             rsp = s.post(url=base_url, data=req_data, verify=False)
             if rsp.status_code != 200:
                 print 'status code not 200'
-                print "here is line :",sys._getframe().f_lineno, rsp.text
+                print "here is line :", sys._getframe().f_lineno, rsp.text
                 print '删除订单请求失败'
             # res_dict = json.loads(rsp.text)
-            print "here is line:",  sys._getframe().f_lineno, rsp.text
+            print "here is line:", sys._getframe().f_lineno, rsp.text
             time.sleep(2)
     except Exception as e:
         print traceback.format_exc()
 
+
 if __name__ == "__main__":
-    main_proc()
-    # place_order(31522034177000910)
+    # main_proc()
+    place_order(31530157582193134)
     # delete_order()

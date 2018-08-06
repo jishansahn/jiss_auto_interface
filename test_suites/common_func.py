@@ -31,6 +31,7 @@ def get_app_version():
 
 # 当前日期  string
 def get_current_date():
+    print time.localtime()
     date_str = time.strftime('%Y-%m-%d', time.localtime())
     return date_str
 
@@ -97,8 +98,8 @@ def get_login_status(cookie):
 
 if __name__ == "__main__":
     print get_current_date()
-    print get_add_days()
-    print get_add_days(20)
-    print get_add_hours()
-    print get_add_hours(5)
-    print get_current_time()
+    # print get_add_days()
+    # print get_add_days(20)
+    # print get_add_hours()
+    # print get_add_hours(5)
+    # print get_current_time()

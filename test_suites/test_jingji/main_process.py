@@ -16,10 +16,10 @@ import traceback
 #     "user_id":3227,
 #     "ZHBSESSID":"3ee278e389a8f5bb7d52b2740009ab51"
 # }
-cookies = dict(ZHBSESSID='5f6ddf6d18b9de22f742f2afb09e0a24')
+cookies = dict(ZHBSESSID='381677bda23eb4-e058-45bb-b03a-03c1bfd3a6de')
 s = requests.session()
 s.cookies = requests.cookies.cookiejar_from_dict(cookies, cookiejar=None, overwrite=True)
-g_host = 'https://www.zuihuibao.cn'
+g_host = 'https://www.zhbbroker.cn'
 
 # g_provider = 'ahuasheng'
 g_provider = 'agent'
@@ -59,13 +59,28 @@ g_source = 'new'
 # g_district = "芳村支公司"
 # g_insurance_company="RENBAO"
 
-g_province = "湖南"
-g_city = "长沙"
-g_district = "天心区支公司"
+# g_province = "湖南"
+# g_city = "长沙"
+# g_district = "天心区支公司"
+# g_department = ''
+# g_insurance_company = "ZHONGHUA"
+# g_com_id = '12100104'
+g_debug = 1
+
+#
+# g_province = "四川"
+# g_city = "攀枝花"
+# g_district = "陶家渡支公司"
+# g_department = ''
+# g_insurance_company = "RENBAO"
+# g_com_id = '10061401'
+
+g_province = "湖北"
+g_city = "宜昌"
+g_district = "中支营业部"
 g_department = ''
-g_insurance_company = "ZHONGHUA"
-g_com_id = '12100104'
-g_debug = 0
+g_insurance_company = "DINGHE"
+g_com_id = '25000000'
 
 def main_proc():
     print '--------------分割线---------------------'
@@ -116,9 +131,9 @@ def main_proc():
             req_data['car_model_no'] = table.cell(i, 2).value
             req_data['frame_no'] = table.cell(i, 3).value
             req_data['engine_no'] = table.cell(i, 4).value
-            req_data['reg_date'] = table.cell(i, 5).value
+            req_data['reg_date'] = xlrd.xldate_as_datetime(table.cell(i, 5).value,0).strftime("%Y-%m-%d")
             req_data['is_special_car'] = table.cell(i, 7).value
-            req_data['special_car_date'] = table.cell(i, 8).value
+            req_data['special_car_date'] = xlrd.xldate_as_datetime(table.cell(i, 8).value,0).strftime("%Y-%m-%d")
             req_data['is_loaned'] = table.cell(i, 9).value
             req_data['beneficiary'] = table.cell(i, 10).value
             req_data['owner_id_no'] = table.cell(i, 11).value
@@ -186,8 +201,8 @@ def main_proc():
                 "has_toast": 0
             }
 
-            req_data2["ins_start_date"] = table.cell(i, 13).value
-            req_data2["force_start_date"] = table.cell(i, 14).value
+            # req_data2["ins_start_date"] = table.cell(i, 13).value
+            # req_data2["force_start_date"] = table.cell(i, 14).value
             if g_debug: print 'line', sys._getframe().f_lineno, req_data2
             # 请求报价
             price_order = price_policy(req_data2)
@@ -288,9 +303,9 @@ def need_insured_address(order_id):
                 'insurance_company': g_insurance_company,
                 'isTwice': '0',
                 'order_id': order_id,
-                'insured_province': '上海',
-                'insured_city': '上海',
-                'insured_area': '浦东新区',
+                'insured_province': '四川',
+                'insured_city': '攀枝花',
+                'insured_area': '东区',
                 'insured_detail': '陆家嘴软件园',
                 'image_info': ''
             }
