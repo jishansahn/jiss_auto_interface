@@ -22,7 +22,7 @@ s.cookies = requests.cookies.cookiejar_from_dict(cookies, cookiejar=None, overwr
 g_host = 'https://www.zhbbroker.cn'
 
 # g_provider = 'ahuasheng'
-g_provider = 'agent'
+g_provider = 'union'
 # g_department = ''
 # g_source='huasheng'
 g_source = 'new'

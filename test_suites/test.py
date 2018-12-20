@@ -3,6 +3,7 @@
 import math
 import functools
 import time
+import logging_demo
 
 # def log(func):
 #     # print('call %s():' % func.__name__)
@@ -164,6 +165,5 @@ if __name__=='__main__':
     # o=fib(6)
     # for n in o:
     #     next(o)
-
 
 
