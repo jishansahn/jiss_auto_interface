@@ -12,8 +12,8 @@ import os
 import ConfigParser
 import logging
 
+# cookies = dict(ZHBSESSID='8004775e40f9b6-dd07-4d19-bfc5-dd3acc941ed4')
 cookies = dict(ZHBSESSID='245346eb7323e7-517d-49d6-8058-2b431fffd1e3')
-# cookies = dict(ZHBSESSID='6a45f290cdcfd58bb8625b6ee6b42673')
 
 s = requests.session()
 s.cookies = requests.cookies.cookiejar_from_dict(cookies, cookiejar=None, overwrite=True)
@@ -35,7 +35,7 @@ g_province = "江苏"
 g_city = "常州"
 g_district = '天宁区'
 g_area = "天宁区"
-g_insurance_company = 'RENBAO'
+g_insurance_company = 'ZHONGHUA'
 g_department = ''
 g_com_id = ''
 g_debug = 1
@@ -193,10 +193,10 @@ def main_proc():
             req_data3['province'] = province
             req_data3['city'] = city
             req_data3['district'] = district
-            req_data3['user_ins_start_date_change'] = 1
-            req_data3['ins_start_date'] = xlrd.xldate_as_datetime(table.cell(i, 13).value,0).strftime("%Y-%m-%d")
-            req_data3["user_force_start_date_change"] = 1
-            req_data3["force_start_date"] = xlrd.xldate_as_datetime(table.cell(i, 14).value,0).strftime("%Y-%m-%d")
+            # req_data3['user_ins_start_date_change'] = 1
+            # req_data3['ins_start_date'] = xlrd.xldate_as_datetime(table.cell(i, 13).value,0).strftime("%Y-%m-%d")
+            # req_data3["user_force_start_date_change"] = 1
+            # req_data3["force_start_date"] = xlrd.xldate_as_datetime(table.cell(i, 14).value,0).strftime("%Y-%m-%d")
             if g_debug: print 'line', sys._getframe().f_lineno, req_data3
 
             code = update(req_data3)
@@ -211,16 +211,16 @@ def main_proc():
                 'insurance_company': g_insurance_company,
                 'force_only': 0,
                 'choose_force': 1,
-                'car_broken': 1,
+                'car_broken': 0,
                 'car_broken_price': 0,
                 'car_broken_amount': 0,
-                'non_deduct_car_broken': 1,
+                'non_deduct_car_broken': 0,
                 'third_party': 500000,
                 'non_deduct_third_party': 1,
-                'driver_seat': 10000,
-                'non_deduct_driver_seat': 1,
-                'passenger_seat': 10000,
-                'non_deduct_passenger_seat': 1,
+                'driver_seat': 0,
+                'non_deduct_driver_seat': 0,
+                'passenger_seat': 0,
+                'non_deduct_passenger_seat': 0,
                 'car_rob': 0,
                 'non_deduct_car_rob': 0,
                 'glass_broken': 0,
@@ -232,7 +232,7 @@ def main_proc():
                 'non_deduct_wade_water': 0,
                 'find_no_third_party': 0,
                 'specify_repair_factory': 0,
-                'third_party_double_on_holiday': 1,
+                'third_party_double_on_holiday': 0,
                 'pay_tax': 1,
                 'user_force_start_date_change': 0,
                 'user_ins_start_date_change': 0,
@@ -401,7 +401,7 @@ def delete_order():
 if __name__ == "__main__":
     try:
         main_proc()
-        # place_order(31530157582193134)
+        # place_order('31545804421695939')
         # delete_order()
     except Exception as e:
         logging.exception(e)
